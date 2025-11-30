@@ -1,0 +1,5 @@
+# UnbeatableTicTacToe-Minimax
+# Pure Python standard library project
+
+# Runtime: None (100% stdlib)
+# tkinter, time included with Python 3.10+
