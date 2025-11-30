@@ -140,9 +140,9 @@ text
 
 ## Evaluation Results
 
-- **Win/Loss/Draw**: 0/0/100% (perfect play)
-- **Move Efficiency**: 47ms average across 100 moves
-- **Optimality**: Verified against solved Tic-Tac-Toe game tree
+- **Win/Loss/Draw**: TBD/TBD/TBD (perfect play)
+- **Move Efficiency**: TBDms average across 100 moves
+- **Optimality**: TBD Verified against solved Tic-Tac-Toe game tree
 
 ## Future Enhancements
 
