@@ -1,4 +1,4 @@
-# Tic-Tac-Toe AI with Minimax Algorithm 🎮
+# UnbeatableTicTacToe-Minimax 🎮
 
 **Unbeatable Tic-Tac-Toe game with AI opponent using the Minimax algorithm.** Play as X or O against an optimal AI that never loses.
 
@@ -25,7 +25,7 @@
 
 ## Demo
 
-python gui.py
+python -m src.gui
 
 text
 
@@ -35,8 +35,8 @@ Choose X or O, then click any empty cell. Watch the AI respond optimally!
 
 1. **Clone or create project folder**:
 
-mkdir "TicTacToe AI"
-cd "TicTacToe AI"
+mkdir "UnbeatableTicTacToe-Minimax"
+cd "UnbeatableTicTacToe-Minimax"
 
 text
 
@@ -59,7 +59,7 @@ text
 
 ## Usage
 
-(.venv) PS> python gui.py
+(.venv) PS> python -m src.gui
 
 text
 
@@ -72,9 +72,9 @@ text
 
 | Metric | Result | Target |
 |--------|--------|--------|
-| Win Rate vs Human | 100% draws | Never loses |
-| Avg Move Time | 0.05-0.1s | <0.2s |
-| States Explored | ~500k max | Optimal |
+| Win Rate vs Human | TBD | Never loses |
+| Avg Move Time | TBD | <0.2s |
+| States Explored | TBD | Optimal |
 
 **Verification**: AI always forces draws against perfect human play.
 
@@ -82,27 +82,39 @@ text
 
 ### Project Structure
 
-TicTacToe AI/
+UnbeatableTicTacToe-Minimax/
 ├── .venv/ # Virtual environment
-├── game.py # Core logic + Minimax
-├── gui.py # Tkinter interface
+├── src/ # Python package
+│ ├── init.py # Package declaration + exports
+│ ├── game.py # Core logic + Minimax
+│ └── gui.py # Tkinter interface
 ├── test.py # Setup verification
 ├── README.md # This file!
-└── requirements.txt # (Optional)
+├── .gitignore # Git exclusions
+└── requirements.txt # Dependencies (empty)
 
 text
 
 ### Core Files
 
-**game.py** - Board state, move validation, winner detection, Minimax AI [web:21]
+**`src/__init__.py`** - Package exports for clean imports [web:135]
 
-**gui.py** - Interactive 3x3 buttons, symbol selection, game flow [web:88]
+from .game import TicTacToe
+from .gui import TicTacToeGUI
+all = ["TicTacToe", "TicTacToeGUI"]
+
+text
+
+**`src/game.py`** - Board state, move validation, winner detection, Minimax AI [web:21]
+
+**`src/gui.py`** - Interactive 3x3 buttons, symbol selection, game flow [web:88]
 
 ### Testing AI Optimality
 
-Play 20 perfect games - expect 100% draws
+Clean imports thanks to init.py exports
 
-python -c "from game import TicTacToe; print('AI unbeatable ✅')"
+from src import TicTacToe
+print('AI unbeatable ✅')
 
 text
 
@@ -114,6 +126,7 @@ text
 | GUI | Tkinter (built-in) |
 | AI | Minimax Algorithm |
 | Environment | venv (Python stdlib) |
+| Package | `__init__.py` exports |
 | Editor | VS Code + Python Extension |
 
 **No external dependencies** - pure Python standard library [web:87]
@@ -141,4 +154,4 @@ text
 
 ## License
 
-MIT License  [web:88]
+MIT License
