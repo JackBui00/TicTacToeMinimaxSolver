@@ -113,10 +113,6 @@ class tictactoe_gui:
             self.end_game(result)
 
     def end_game(self, result):
-        # update ai learning 
-        if self.game and self.ai_symbol:
-            self.game.update_from_result(result, self.ai_symbol)
-            
         # Display end game message
         if result == "Draw": 
             messagebox.showinfo("Game Over", "It's a Draw!")
