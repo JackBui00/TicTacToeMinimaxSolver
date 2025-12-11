@@ -10,7 +10,7 @@ class TicTacToe:
         self.history = {}  # to keep track of moves made
         self.state_action_trace = [] # to keep track of state-action pairs for RL
         self.memory_file = "tictactoe_memory.json"  # file to store memory data
-        self.load_memory() 
+        
 
 
     def encode_state(self, ai_symbol, human_symbol):
@@ -161,8 +161,15 @@ class TicTacToe:
         # keep only moves with best minimax score (optimal moves)
         candidate_moves = [m for m, s in move_scores if s == best_score]
 
+        # Define center and corner preferences for tie-breaking
+        position_priorities = {
+            4: 2,  # center highest
+            0: 1, 2: 1, 6: 1, 8: 1,  # corners next
+            1: 0, 3: 0, 5: 0, 7: 0   # edges lowest
+        }
+
         if not use_learning or len(candidate_moves) <= 1:
-            best_move = random.choice(candidate_moves) if candidate_moves else None
+            best_move = max(candidate_moves, key=lambda m: position_priorities.get(m, -1)) if candidate_moves else None
         else:
             # use learned stats to choose among optimal moves
             state = self.encode_state(ai_symbol, human_symbol)
@@ -173,9 +180,11 @@ class TicTacToe:
                 if ls > best_learn_score:
                     best_learn_score = ls
                     best_move = m
-            # if no learned preference yet, fall back to random among candidates
-            if best_move is None:
-                best_move = random.choice(candidate_moves)
+            # if no learned preference (all 0), fall back to position priority
+            if best_learn_score == 0:
+                best_move = max(candidate_moves, key=lambda m: position_priorities.get(m, -1))
+            elif best_move is None:
+                best_move = max(candidate_moves, key=lambda m: position_priorities.get(m, -1))
 
         # record chosen move for learning
         if best_move is not None:
