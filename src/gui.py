@@ -37,6 +37,9 @@ class tictactoe_gui:
         self.ai_symbol = "O" if symbol == "X" else "X"
         # Initialize game logic
         self.game = TicTacToe()
+        
+        self.game.load_memory()
+        
         self.game.current_player = self.human_symbol
 
         self.setup_board()
@@ -73,10 +76,18 @@ class tictactoe_gui:
 
         reset_btn = tk.Button(bottom_frame, text = "Main Menu", font = ("Arial", 12), width = 12, command = self.show_symbol_selection)
         reset_btn.pack()
+        
+        clear_btn = tk.Button(bottom_frame, text="Clear AI Memory", font=("Arial",12), width=15, command=self.clear_ai_memory)
+        clear_btn.pack()
 
         # Ai goes first if player is O 
         if self.human_symbol == "O":
             self.root.after(500, self.ai_move)
+    
+    def clear_ai_memory(self):
+        if self.game:
+            self.game.clear_memory()
+            messagebox.showinfo("Success", "AI memory has been reset!")
 
     def on_human_click(self, pos):
         # Handle human move

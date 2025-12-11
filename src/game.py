@@ -10,6 +10,7 @@ class TicTacToe:
         self.history = {}  # to keep track of moves made
         self.state_action_trace = [] # to keep track of state-action pairs for RL
         self.memory_file = "tictactoe_memory.json"  # file to store memory data
+        self.load_memory() 
 
 
     def encode_state(self, ai_symbol, human_symbol):
@@ -20,16 +21,20 @@ class TicTacToe:
         if os.path.exists(self.memory_file):
             try:
                 with open(self.memory_file, 'r') as f:
-                    self.history = json.load(f)
-            except Exception: 
-                self.memory = {}
-        else: 
+                    data = json.load(f)
+                    if isinstance(data, dict):
+                        self.history = data
+                    else:
+                        self.history = {}
+            except Exception:
+                self.history = {}
+        else:
             self.history = {}
     
     def save_memory(self):
         try: 
             with open(self.memory_file, 'w') as f:
-                json.dump(self.history, f)
+                json.dump(self.history, f, indent = 2)
         except Exception:
             pass
     
@@ -176,6 +181,12 @@ class TicTacToe:
         if best_move is not None:
             self.record_ai_move(ai_symbol, human_symbol, best_move)
         return best_move
+    
+    def clear_memory(self):
+        self.history = {}
+        self.state_action_trace = []
+        if os.path.exists(self.memory_file):
+            os.remove(self.memory_file)
         
 
     def reset(self):
