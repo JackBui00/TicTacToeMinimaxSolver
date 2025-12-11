@@ -1,44 +1,59 @@
 from game import TicTacToe
 from multiprocessing import Pool, cpu_count
 
-
-def play_single_game(ai1_symbol="X", ai2_symbol="O"):
-    game = TicTacToe()
-    game.current_player = ai1_symbol
-
+def play_single_game_pair(args):
+    ai1_symbol, ai2_symbol = args
+    g1 = TicTacToe()
+    g1.current_player = ai1_symbol
     while True:
-        current = game.current_player
+        current = g1.current_player
         ai_symbol = current
-        human_symbol = ai2_symbol if current == ai1_symbol else ai1_symbol  # just for API
-
-        move = game.get_best_move(ai_symbol, human_symbol, use_learning=False)
+        human_symbol = ai2_symbol if current == ai1_symbol else ai1_symbol
+        move = g1.get_best_move(ai_symbol, human_symbol, use_learning=False)
         if move is None:
-            # no moves left, check result
-            result = game.check_winner()
-            return result
+            result1 = g1.check_winner()
+            break
+        g1.make_move(move, ai_symbol)
+        result1 = g1.check_winner()
+        if result1 is not None:
+            break
 
-        game.make_move(move, ai_symbol)
-        result = game.check_winner()
-        if result is not None:
-            return result
+    g2 = TicTacToe()
+    g2.current_player = ai2_symbol
+    while True:
+        current = g2.current_player
+        ai_symbol = current
+        human_symbol = ai1_symbol if current == ai2_symbol else ai2_symbol
+        move = g2.get_best_move(ai_symbol, human_symbol, use_learning=False)
+        if move is None:
+            result2 = g2.check_winner()
+            break
+        g2.make_move(move, ai_symbol)
+        result2 = g2.check_winner()
+        if result2 is not None:
+            break
 
-def run_experiments(n_games=1000):
+    return result1, result2
+
+def run_experiments_parallel(n_games=10000):
+    n_pairs = n_games
+    args = [("X", "O")] * n_pairs
+
     stats_first = {"X": 0, "O": 0, "Draw": 0}
     stats_second = {"X": 0, "O": 0, "Draw": 0}
+    completed = 0
 
-    print(f"Running {n_games} games with AI1 as X...")
-    for i in range(1, n_games + 1):
-        result = play_single_game("X", "O")
-        stats_first[result] = stats_first.get(result, 0) + 1
-        if i % 100 == 0:
-            print(f"  completed {i}/{n_games} games (AI1 as X)")
+    print(f"Running {n_pairs} AI-vs-AI pairs on {cpu_count()} cores...")
 
-    print(f"\nRunning {n_games} games with AI1 as O...")
-    for i in range(1, n_games + 1):
-        result = play_single_game("O", "X")
-        stats_second[result] = stats_second.get(result, 0) + 1
-        if i % 100 == 0:
-            print(f"  completed {i}/{n_games} games (AI1 as O)")
+    with Pool(processes=cpu_count()) as pool:
+        for r1, r2 in pool.imap_unordered(play_single_game_pair, args):
+            completed += 1
+            stats_first[r1] = stats_first.get(r1, 0) + 1
+            stats_second[r2] = stats_second.get(r2, 0) + 1
+
+            if completed % 10 == 0 or completed == n_pairs:
+                pct = 100.0 * completed / n_pairs
+                print(f"  completed {completed}/{n_pairs} pairs ({pct:.1f}%)")
 
     print("\n=== AI vs AI (AI1 starts as X) ===")
     total_first = sum(stats_first.values())
@@ -55,4 +70,4 @@ def run_experiments(n_games=1000):
         print(f"{key}: {count} ({pct:.1f}%)")
 
 if __name__ == "__main__":
-    run_experiments(1000)
+    run_experiments_parallel(5000)
