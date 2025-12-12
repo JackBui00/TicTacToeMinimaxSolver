@@ -1,9 +1,9 @@
 # Unbeatable Tic-Tac-Toe Project
 
-**Comprehensive Python Tic-Tac-Toe with unbeatable Minimax AI, Tkinter GUI, reinforcement learning, and LLM benchmarking.** All components use pure Python standard library (OpenAI optional for benchmarks).[file:1][file:5]
+**Comprehensive Python Tic-Tac-Toe with unbeatable Minimax AI, Tkinter GUI, reinforcement learning, and LLM benchmarking.** All components use pure Python standard library (OpenAI optional for benchmarks).
 
 ## Project Overview
-This production-ready project delivers a complete Tic-Tac-Toe system where players choose X (first) or O (second) against an optimal AI that guarantees draws with perfect play. Key innovations include JSON-based move memory for learning optimal tie-breakers, parallel multiprocessing for AI-vs-AI verification (10k+ games), and OpenAI GPT benchmarking to compare LLM reasoning against solved Minimax.[file:5][file:2][file:4]
+This production-ready project delivers a complete Tic-Tac-Toe system where players choose X (first) or O (second) against an optimal AI that guarantees draws with perfect play. Key innovations include JSON-based move memory for learning optimal tie-breakers, parallel multiprocessing for AI-vs-AI verification (10k+ games), and OpenAI GPT benchmarking to compare LLM reasoning against solved Minimax.
 
 ## Core Components
 
