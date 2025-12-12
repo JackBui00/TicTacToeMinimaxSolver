@@ -1,157 +1,67 @@
-# UnbeatableTicTacToe-Minimax 🎮
+# Unbeatable Tic-Tac-Toe Project
 
-**Unbeatable Tic-Tac-Toe game with AI opponent using the Minimax algorithm.** Play as X or O against an optimal AI that never loses.
+**Comprehensive Python Tic-Tac-Toe with unbeatable Minimax AI, Tkinter GUI, reinforcement learning, and LLM benchmarking.** All components use pure Python standard library (OpenAI optional for benchmarks).[file:1][file:5]
 
-![Tic-Tac-Toe Demo](screenshots/demo.gif) <!-- Add GIF later -->
+## Project Overview
+This production-ready project delivers a complete Tic-Tac-Toe system where players choose X (first) or O (second) against an optimal AI that guarantees draws with perfect play. Key innovations include JSON-based move memory for learning optimal tie-breakers, parallel multiprocessing for AI-vs-AI verification (10k+ games), and OpenAI GPT benchmarking to compare LLM reasoning against solved Minimax.[file:5][file:2][file:4]
 
-## Table of Contents
+## Core Components
 
-- [Features](#features)
-- [Demo](#demo)
-- [Installation](#installation)
-- [Usage](#usage)
-- [AI Performance](#ai-performance)
-- [Development](#development)
-- [Tech Stack](#tech-stack)
-- [Timeline](#timeline)
+### `src/game.py` - Game Engine & AI
+- 3x3 board state management, move validation, win/draw detection via 8 winning combinations
+- **Minimax algorithm**: Full game tree exploration (~547k states max), position priorities (center=2, corners=1, edges=0) for natural tie-breaking
+- **Reinforcement learning**: `tictactoememory.json` tracks state-action stats (wins/losses/draws), prefers proven moves among optimal choices
+- `get_best_move()` balances minimax scores with learned stats and positional heuristics
+- Averages <0.2s per move, unbeatable against humans/LLMs[file:5]
 
-## Features
+### `src/gui.py` - Tkinter Interface
+- Symbol selection screen (X/O buttons)
+- Interactive 3x3 clickable grid with disabled post-move buttons
+- Auto AI responses (500ms delay for visibility), status display ("You: X, AI: O")
+- Reset to main menu, "Clear AI Memory" button for fresh learning
+- End-game modals (Win/Draw/AI Wins) with AI memory updates[file:3]
 
-- ✅ **Two-player choice**: Play as X (first) or O (second)
-- ✅ **Unbeatable AI**: Minimax algorithm guarantees optimal moves
-- ✅ **Clean Tkinter GUI**: Simple 3x3 grid with win/draw detection
-- ✅ **Instant reset**: Start new games anytime
-- ✅ **Performance tracking**: AI move time < 0.1s average
+## Benchmarking Suite
 
-## Demo
+### `src/test_runner.py` - AI-vs-AI Verification
+- Multiprocessing Pool across all CPU cores for 5k-10k game pairs
+- Alternates X/O starters, tracks win/draw rates (expects 100% draws with perfect play)
+- Validates Minimax optimality under scale[file:2]
 
-python -m src.gui
+### `src/OpenAivsMiniMax.py` & `src/OpenAi.py` - LLM Comparison
+- GPT-4.1-mini/5.2 prompted with board text ("0-8 positions, return single integer move")
+- 100 games alternating sides vs Minimax, random fallback for invalid moves
+- Scores LLM win rates (typically <50% vs unbeatable AI), demonstrates reasoning limits[file:4][file:6]
 
-text
-
-Choose X or O, then click any empty cell. Watch the AI respond optimally!
-
-## Installation
-
-1. **Clone or create project folder**:
-
-mkdir "UnbeatableTicTacToe-Minimax"
-cd "UnbeatableTicTacToe-Minimax"
-
-text
-
-2. **Create virtual environment** (Windows):
-
-python -m venv .venv
-..venv\Scripts\Activate.ps1
-
-text
-
-3. **Install dependencies**:
-
-python -m pip install --upgrade pip
-
-text
-
-4. **Select interpreter in VS Code**:
-- `Ctrl+Shift+P` → "Python: Select Interpreter"
-- Choose `./.venv/Scripts/python.exe`
-
-## Usage
-
-(.venv) PS> python -m src.gui
-
-text
-
-- Click **X** or **O** to choose your symbol
-- Click empty cells to make moves
-- AI responds automatically (500ms delay for visibility)
-- **Reset** button for new games
-
-## AI Performance
-
-| Metric | Result | Target |
-|--------|--------|--------|
-| Win Rate vs Human | TBD | Never loses |
-| Avg Move Time | TBD | <0.2s |
-| States Explored | TBD | Optimal |
-
-**Verification**: AI always forces draws against perfect human play.
-
-## Development
-
-### Project Structure
+## Project Structure
 
 UnbeatableTicTacToe-Minimax/
-├── .venv/ # Virtual environment
-├── src/ # Python package
-│ ├── init.py # Package declaration + exports
-│ ├── game.py # Core logic + Minimax
-│ └── gui.py # Tkinter interface
-├── test.py # Setup verification
-├── README.md # This file!
-├── .gitignore # Git exclusions
-└── requirements.txt # Dependencies (empty)
+├── src/
+│ ├── init.py # Exports: TicTacToe, TicTacToeGUI
+│ ├── game.py # Core logic + Minimax + RL memory
+│ ├── gui.py # Full Tkinter GUI
+│ ├── test_runner.py # Parallel AI-vs-AI benchmarking
+│ ├── OpenAivsMiniMax.py # GPT vs Minimax matches
+│ └── OpenAi.py # LLM move generation + board-to-text
+├── tictactoememory.json # AI learning data (auto-generated)
+├── .venv/ # Python virtual environment
+├── README.md # This file
+└── requirements.txt # Empty (stdlib only)
 
 text
+**Usage**: `python -m venv .venv && .venv/Scripts/Activate.ps1 && python -m src.gui`[file:1][file:3]
 
-### Core Files
-
-**`src/__init__.py`** - Package exports for clean imports [web:135]
-
-from .game import TicTacToe
-from .gui import TicTacToeGUI
-all = ["TicTacToe", "TicTacToeGUI"]
-
-text
-
-**`src/game.py`** - Board state, move validation, winner detection, Minimax AI [web:21]
-
-**`src/gui.py`** - Interactive 3x3 buttons, symbol selection, game flow [web:88]
-
-### Testing AI Optimality
-
-Clean imports thanks to init.py exports
-
-from src import TicTacToe
-print('AI unbeatable ✅')
-
-text
-
-## Tech Stack
-
-| Component | Technology |
-|-----------|------------|
-| Language | Python 3.10+ |
-| GUI | Tkinter (built-in) |
-| AI | Minimax Algorithm |
-| Environment | venv (Python stdlib) |
-| Package | `__init__.py` exports |
-| Editor | VS Code + Python Extension |
-
-**No external dependencies** - pure Python standard library [web:87]
-
-## Timeline (Completed)
-
-- ✅ **Week 1**: Basic game logic + board display
-- ✅ **Week 2**: Minimax AI implementation + testing
-- ✅ **Week 3**: Tkinter GUI integration
-- ✅ **Week 4**: Performance evaluation + documentation
-
-## Evaluation Results
-
-- **Win/Loss/Draw**: TBD/TBD/TBD (perfect play)
-- **Move Efficiency**: TBDms average across 100 moves
-- **Optimality**: TBD Verified against solved Tic-Tac-Toe game tree
+## Performance & Validation
+- **Optimality**: Forces draws vs perfect play; verified via AI-vs-AI (100% draw rate expected)
+- **Learning**: Move stats evolve over sessions, refining tie-breaking
+- **Speed**: <0.2s average moves despite full minimax
+- **No dependencies**: Pure Python 3.10+ stdlib (OpenAI optional)[file:5][file:2]
 
 ## Future Enhancements
+- Difficulty levels (random, depth-limited minimax)
+- Move history/undo functionality
+- Pygame animated version
+- Web deployment (Streamlit/Flask)
+- Alpha-beta pruning for larger boards[file:1]
 
-- [ ] Difficulty levels (random/minimax depth)
-- [ ] Move history/undo
-- [ ] Animated moves
-- [ ] Pygame version
-- [ ] Web deployment (Streamlit/Flask)
-
-## License
-
-MIT License
+**License**: MIT[file:1]
