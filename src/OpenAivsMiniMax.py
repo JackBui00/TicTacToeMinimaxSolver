@@ -1,8 +1,8 @@
 from game import TicTacToe
-from OpenAi import get_llm_move, board_to_text
+from OpenAi import get_llm_move
 import random
 
-def play_one_game(llm_symbol="O", minimax_symbol="X"):
+def play_one_game(openAI_model, llm_symbol="O", minimax_symbol="X"):
     game = TicTacToe()
     game.load_memory()  # optional
     game.current_player = "X"  # X always starts
@@ -16,7 +16,7 @@ def play_one_game(llm_symbol="O", minimax_symbol="X"):
             move = game.get_best_move(minimax_symbol, llm_symbol, use_learning=True)
             game.make_move(move, minimax_symbol)
         else:
-            move = get_llm_move(game, llm_symbol, minimax_symbol)
+            move = get_llm_move(game, openAI_model, llm_symbol, minimax_symbol)
             if move is None:
                 # safety fallback
                 empties = game.get_empty_positions()
@@ -25,7 +25,7 @@ def play_one_game(llm_symbol="O", minimax_symbol="X"):
                 move = random.choice(empties)
             game.make_move(move, llm_symbol)
 
-def run_match(num_games=10):
+def run_match(num_games=10, openAI_model ="gpt-4.1-mini" ):
     scores = {
         "LLM": {"X": 0, "O": 0},
         "Minimax": {"X": 0, "O": 0},
@@ -39,7 +39,7 @@ def run_match(num_games=10):
         else:
             llm_symbol, minimax_symbol = "X", "O"
 
-        result = play_one_game(llm_symbol=llm_symbol, minimax_symbol=minimax_symbol)
+        result = play_one_game(openAI_model, llm_symbol=llm_symbol, minimax_symbol=minimax_symbol)
 
         if result == llm_symbol:
             scores["LLM"][llm_symbol] += 1
@@ -59,4 +59,4 @@ def run_match(num_games=10):
     print("Draws:", scores["Draw"])
 
 if __name__ == "__main__":
-    run_match(100)
+    run_match(10, openAI_model ="gpt-4.1-mini" )

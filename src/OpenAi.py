@@ -22,7 +22,7 @@ def board_to_text(board):
         rows.append(" | ".join(row))
     return "\n---------\n".join(rows)
 
-def get_llm_move(game, llm_symbol="O", other_symbol="X"):
+def get_llm_move(game, OpenAi_model,  llm_symbol="O", other_symbol="X"):
     board_str = board_to_text(game.board)
     prompt = f"""
             You are playing tic tac toe as '{llm_symbol}'. The other player is '{other_symbol}'.
@@ -36,7 +36,7 @@ def get_llm_move(game, llm_symbol="O", other_symbol="X"):
             """
     # Using gpt-4.1-mini for lightweight inference and gpt-5.2 for stronger play
     resp = client.chat.completions.create(
-        model="gpt-5.2",
+        model= OpenAi_model,
         messages=[{"role": "user", "content": prompt}],
         temperature=0,
     )
