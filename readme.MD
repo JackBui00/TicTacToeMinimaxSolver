@@ -80,14 +80,13 @@ If this repo avoids third-party packages, add a tiny `.env` loader (simple `KEY=
 
 ## Screenshots
 
-### Start menu
-![Start menu](images/GUI_Start_Menu.png)
-
-### Gameplay
-![Gameplay](images/GUI_Playing.png)
-
-### Example draw
-![Draw screen](images/GUI_Completed_Draw.png)
+<table>
+  <tr>
+    <td><img src="images/GUI_Start_Menu.png" width="260" alt="Start menu"></td>
+    <td><img src="images/GUI_Playing.png" width="260" alt="Gameplay"></td>
+    <td><img src="images/GUI_Completed_Draw.png" width="260" alt="Draw screen"></td>
+  </tr>
+</table>
 
 ## Benchmark results
 
