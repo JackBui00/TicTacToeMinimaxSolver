@@ -78,6 +78,32 @@ If this repo avoids third-party packages, add a tiny `.env` loader (simple `KEY=
 - Runs matchups vs Minimax; invalid moves can fall back to a random valid move.
 - Reports LLM win/draw/loss rates vs solved Minimax.
 
+## Screenshots
+
+### Start menu
+![Start menu](images/GUI_Start_Menu.png)
+
+### Gameplay
+![Gameplay](images/GUI_Playing.png)
+
+### Example draw
+![Draw screen](images/GUI_Completed_Draw.png)
+
+## Benchmark results
+
+### GPT‑4o‑mini vs Minimax (100 games)
+![GPT‑4o‑mini vs Minimax (100 games)](images/openai_gpt-4o-mini_vs_minimax_100_games.png)
+
+### GPT‑4o‑mini vs Minimax (1000 games)
+![GPT‑4o‑mini vs Minimax (1000 games)](images/openai_gpt-4o-mini_vs_minimax.png)
+
+### GPT‑5.2 vs Minimax (100 games)
+![GPT‑5.2 vs Minimax (100 games)](images/openai_gpt-5.2_vs_minimax_100_games.png)
+
+### GPT‑5.2 vs Minimax (1000 games)
+![GPT‑5.2 vs Minimax (1000 games)](images/openai_gpt-5.2_vs_minimax.png)
+
+
 ## Security Notes
 - Never hardcode API keys in source files. 
 - Add `.env` to `.gitignore` and rotate keys if they’re ever exposed. 
