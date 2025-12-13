@@ -1,49 +1,93 @@
 # Unbeatable Tic-Tac-Toe Project
 
-**Comprehensive Python Tic-Tac-Toe with unbeatable Minimax AI, Tkinter GUI, reinforcement learning, and LLM benchmarking.** All components use pure Python standard library (OpenAI optional for benchmarks).
+**Comprehensive Python Tic-Tac-Toe with unbeatable Minimax AI, Tkinter GUI, reinforcement learning, and optional OpenAI LLM benchmarking.** Core gameplay uses pure Python 3.10+ standard library; OpenAI is only required if you enable LLM mode/benchmarks. 
 
 ## Project Overview
-This production-ready project delivers a complete Tic-Tac-Toe system where players choose X (first) or O (second) against an optimal AI that guarantees draws with perfect play. Key innovations include JSON-based move memory for learning optimal tie-breakers, parallel multiprocessing for AI-vs-AI verification (10k+ games), and OpenAI GPT benchmarking to compare LLM reasoning against solved Minimax.
+This project delivers a complete Tic-Tac-Toe system where players choose X (first) or O (second) against an optimal Minimax AI that guarantees at least a draw with perfect play, plus an optional LLM opponent for comparison experiments. The OpenAI integration reads the API key from `OPENAI_API_KEY` in your environment (recommended) and can optionally be loaded from a `.env` file during local development. 
 
 ## Core Components
 
 ### `src/game.py` - Game Engine & AI
-- 3x3 board state management, move validation, win/draw detection via 8 winning combinations
-- **Minimax algorithm**: Full game tree exploration (~547k states max), position priorities (center=2, corners=1, edges=0) for natural tie-breaking
-- **Reinforcement learning**: `tictactoememory.json` tracks state-action stats (wins/losses/draws), prefers proven moves among optimal choices
-- `get_best_move()` balances minimax scores with learned stats and positional heuristics
-- Averages <0.2s per move, unbeatable against humans/LLMs
+- 3x3 board state management, move validation, win/draw detection via 8 winning combinations.
+- **Minimax algorithm**: Full-depth search with tie-breaking heuristics (center > corners > edges).
+- **Reinforcement learning**: `tictactoememory.json` tracks state-action stats (wins/losses/draws), preferring proven moves among equally optimal Minimax choices.
+- `get_best_move()` balances Minimax score, learned stats, and positional heuristics.
 
 ### `src/gui.py` - Tkinter Interface
-- Symbol selection screen (X/O buttons)
-- Interactive 3x3 clickable grid with disabled post-move buttons
-- Auto AI responses (500ms delay for visibility), status display ("You: X, AI: O")
-- Reset to main menu, "Clear AI Memory" button for fresh learning
-- End-game modals (Win/Draw/AI Wins) with AI memory updates
+- Symbol selection screen (X/O).
+- AI mode selection:
+  - **Minimax** (default, unbeatable).
+  - **LLM (OpenAI)** (optional).
+- Interactive 3x3 clickable grid with disabled post-move buttons.
+- Auto AI responses (visual delay), status display, and end-game modals.
+- Reset to main menu and “Clear AI Memory”.
+
+## LLM Mode (OpenAI)
+
+### What you need
+- An OpenAI API key available as the environment variable `OPENAI_API_KEY`. 
+- Keep secrets out of source control (add `.env` to `.gitignore`). 
+
+### 1) Create a `.env` file (recommended for local dev)
+Create `.env` in the project root:
+
+OPENAI_API_KEY=sk-your_key_here
+
+text
+
+> Do not commit `.env` to git. 
+
+### 2) Load the key into your environment
+
+#### Option A: Export it in your shell (no code changes)
+**macOS / Linux**
+
+export OPENAI_API_KEY="sk-your_key_here"
+python -m src.gui
+
+text
+
+**Windows (PowerShell)**
+
+setx OPENAI_API_KEY "sk-your_key_here"
+python -m src.gui
+
+text
+
+OpenAI tools/clients commonly read `OPENAI_API_KEY` from the environment. 
+
+#### Option B: Auto-load `.env` in pure stdlib (no extra dependencies)
+If this repo avoids third-party packages, add a tiny `.env` loader (simple `KEY=VALUE` parsing) and call it early at startup so `os.environ["OPENAI_API_KEY"]` is set before any OpenAI calls. Parsing `.env`-style files into environment variables is a common approach. 
+
+> Note: The official OpenAI Python README often suggests `python-dotenv`, but this project can stay dependency-free by using a small stdlib loader instead. 
+
+### 3) Use the LLM in the GUI
+1. Run the GUI.
+2. Select **LLM AI (OpenAI)**.
+3. Pick a model (e.g., `gpt-4.1-mini` or `gpt-5.2`).
+4. Start the game.
 
 ## Benchmarking Suite
 
 ### `src/test_runner.py` - AI-vs-AI Verification
-- Multiprocessing Pool across all CPU cores for 5k-10k game pairs
-- Alternates X/O starters, tracks win/draw rates (expects 100% draws with perfect play)
-- Validates Minimax optimality under scale
+- Multiprocessing Pool across CPU cores for 5k–10k+ games.
+- Alternates X/O starters, tracks win/draw rates (expected: all draws with perfect play).
 
 ### `src/OpenAivsMiniMax.py` & `src/OpenAi.py` - LLM Comparison
-- GPT-4.1-mini/5.2 prompted with board text ("0-8 positions, return single integer move")
-- 100 games alternating sides vs Minimax, random fallback for invalid moves
-- Scores LLM win rates (typically <50% vs unbeatable AI), demonstrates reasoning limits
+- Prompts an OpenAI model with a board representation and requests a single integer move (0–8).
+- Runs matchups vs Minimax; invalid moves can fall back to a random valid move.
+- Reports LLM win/draw/loss rates vs solved Minimax.
 
-## Performance & Validation
-- **Optimality**: Forces draws vs perfect play; verified via AI-vs-AI (100% draw rate expected)
-- **Learning**: Move stats evolve over sessions, refining tie-breaking
-- **Speed**: <0.2s average moves despite full minimax
-- **No dependencies**: Pure Python 3.10+ stdlib (OpenAI optional)
+## Security Notes
+- Never hardcode API keys in source files. 
+- Add `.env` to `.gitignore` and rotate keys if they’re ever exposed. 
 
 ## Future Enhancements
-- Difficulty levels (random, depth-limited minimax)
-- Move history/undo functionality
-- Pygame animated version
-- Web deployment (Streamlit/Flask)
-- Alpha-beta pruning for larger boards
+- Difficulty levels (random, depth-limited minimax).
+- Move history/undo.
+- Pygame version.
+- Web deployment (Streamlit/Flask).
+- Alpha-beta pruning for larger boards.
 
-**License**: MIT
+## License
+MIT
