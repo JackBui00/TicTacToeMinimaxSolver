@@ -92,16 +92,16 @@ If this repo avoids third-party packages, add a tiny `.env` loader (simple `KEY=
 ## Benchmark results
 
 ### GPT‑4o‑mini vs Minimax (100 games)
-![GPT‑4o‑mini vs Minimax (100 games)](images/openai_gpt-4o-mini_vs_minimax_100_games.png)
+![GPT‑4o‑mini vs Minimax (100 games)](images/openai_gpt-4o-mini_vs_minimax.png)
 
 ### GPT‑4o‑mini vs Minimax (1000 games)
-![GPT‑4o‑mini vs Minimax (1000 games)](images/openai_gpt-4o-mini_vs_minimax.png)
+![GPT‑4o‑mini vs Minimax (1000 games)](images/openai_gpt-4o-mini_vs_minimax_100_games.png)
 
 ### GPT‑5.2 vs Minimax (100 games)
-![GPT‑5.2 vs Minimax (100 games)](images/openai_gpt-5.2_vs_minimax_100_games.png)
+![GPT‑5.2 vs Minimax (100 games)](images/openai_gpt-5.2_vs_minimax.png)
 
 ### GPT‑5.2 vs Minimax (1000 games)
-![GPT‑5.2 vs Minimax (1000 games)](images/openai_gpt-5.2_vs_minimax.png)
+![GPT‑5.2 vs Minimax (1000 games)](images/openai_gpt-5.2_vs_minimax_100_games.png)
 
 
 ## Security Notes
